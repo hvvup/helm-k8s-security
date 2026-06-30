@@ -28,3 +28,28 @@ podSecurity:
   enforce: warn
   audit: audit
   warn: warn
+
+zeroTrust:
+  enabled: true
+
+  mtls:
+    mode: STRICT
+
+  authorizationPolicy:
+    defaultDeny: true
+    allowedServices:
+        - name: frontend-to-backend
+          server: backend
+          client:
+            serviceAccount: frontend-serviceAccount
+          ports:
+            - 8080
+
+# Linkerd sub-chart
+linkerd-control-plane:
+  identityTrustAnchorsPEM: ""
+  identity:
+    issuer:
+      tls:
+        crtPEM: ""
+        keyPEM: ""

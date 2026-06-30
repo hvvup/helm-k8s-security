@@ -29,9 +29,9 @@ spec:
     {{- if .Values.networkPolicy.allowedNamespaces }}
     - from:
       {{- range .Values.networkPolicy.allowedNamespaces }}
-      - namespaceSelector:
-          matchLabels:
-            kubernetes.io/metadata.name: {{ .name }}
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: {{ .name }}
       {{- end }}
       ports:
         {{- range .Values.networkPolicy.allowedIngressPorts }}

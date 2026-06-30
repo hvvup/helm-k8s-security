@@ -1,0 +1,13 @@
+{{- if .Values.zeroTrust.enabled }}
+apiVersion: v1
+kind: Namespace 
+metadata:
+  name: {{ .Values.namespace }}
+  labels:
+    linkerd.io/inject: enabled
+  annotations:
+    config.linkerd.io/proxy-await: "enabled"
+    {{- if eq .Values.zeroTrust.mtls.mode "STRICT" }}
+    config.linkerd.io/skip-outbound-ports: ""
+    {{- end }}
+{{- end }}
