@@ -1,0 +1,42 @@
+{{- if .Values.networkPolicy.enabled }}
+
+# Deny-All Ingress
+{{- if .Values.networkPolicy.defaultDenyIngress }}
+apiVersion: networking.k8s.io/v1
+kind: networkPolicy
+metadata:
+  name: {{ include "k8s-security.fullname" . }}-deny-ingress
+  namespace: {{ .Values.namespace }}
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+
+---
+{{- end }}
+
+# Allowed Ports & Namespaces
+apiVersion: networking.k8s.io/v1
+kind: networkPolicy
+metadata:
+  name: {{ include "k8s-security.fullname" . }}-allowed-ingress
+  namespace: {{ .Values.namespace }}
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+  ingress:
+    {{- if .Values.networkPolicy.allowedNamespaces }}
+    - from:
+      {{- range .Values.networkPolicy.allowedNamespaces }}
+      - namespaceSelector:
+          matchLabels:
+            kubernetes.io/metadata.name: {{ .name }}
+      {{- end }}
+      ports:
+        {{- range .Values.networkPolicy.allowedIngressPorts }}
+        - port: {{ .port }}
+          protocol: {{ .protocol }}
+      {{- end }}
+    {{- end }}
+{{- end }}

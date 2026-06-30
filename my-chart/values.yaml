@@ -1,0 +1,30 @@
+namespace: default
+
+networkPolicy:
+  enabled: true
+
+  defaultDenyIngress: true
+  defaultDenyEgress: true
+
+  allowedIngresPorts:
+    - port: 80
+      protocol: TCP
+    - port: 443
+      protocol: TCP
+  
+  allowedNamespaces:
+    - name: monitoring
+    - name: ingress-nginx
+
+# Pod Security 설정
+
+podSecurity:
+  enabled: true
+
+  # baseline / restricted /privileged
+  level: restricted
+
+  # 위반 시 동작: enforce / audit / warn
+  enforce: warn
+  audit: audit
+  warn: warn
