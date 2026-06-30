@@ -6,7 +6,7 @@ networkPolicy:
   defaultDenyIngress: true
   defaultDenyEgress: true
 
-  allowedIngresPorts:
+  allowedIngressPorts:
     - port: 80
       protocol: TCP
     - port: 443
